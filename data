@@ -1,0 +1,37 @@
+Form object:
+{
+    port,
+    allowedips,
+    networkCidr,
+    endpoint,
+    dns,
+    postuprule,
+    postdownrule
+}
+
+server object: 
+
+{
+    Address,
+    ListenPort,
+    PrivateKey,
+    PostUp,
+    PostDown,
+    Peers: [Peer]
+}
+
+Peer object: 
+{
+    PublicKey,
+    AllowedIPs,
+    Endpoint?
+}
+
+
+client object: 
+
+{
+    Address,
+    PrivateKey,
+    Peer
+}
