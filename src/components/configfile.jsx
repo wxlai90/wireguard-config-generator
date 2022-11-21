@@ -6,6 +6,10 @@ import generateKeys from "../wireguard";
 const ConfigFile = (props) => {
   const { config } = props;
   const [peerCount, setPeerCount] = useState(1);
+  const [showToast, setShowToast] = useState({
+    server: false,
+    client: false,
+  });
   const [generatedConfig, setGeneratedConfig] = useState({
     server: {
       privateKey: "",
@@ -70,7 +74,7 @@ const ConfigFile = (props) => {
       configToExport += "\n";
       configToExport += "[Peer]\n";
       configToExport += `PublicKey = ${generatedConfig.server.publicKey}\n`;
-      configToExport += `AllowedIPs = ${partialSubnet + (idx + 2)}/32\n`;
+      configToExport += `AllowedIPs = ${config.allowedIPs}\n`;
       configToExport += `Endpoint = ${config.endpoint}:${config.port}\n`;
       configToExport += "\n";
       clients += configToExport;
@@ -83,21 +87,30 @@ const ConfigFile = (props) => {
   };
 
   const copyServerToClipboard = () => {
+    setShowToast((p) => ({ ...p, server: true }));
     const { server } = generateConfigs();
 
     navigator.clipboard
       .writeText(server)
       .then((_) => _)
       .catch(console.error);
+
+    setTimeout(() => {
+      setShowToast((p) => ({ ...p, server: false }));
+    }, 1000);
   };
 
   const copyClientToClipboard = () => {
+    setShowToast((p) => ({ ...p, client: true }));
     const { clients } = generateConfigs();
 
     navigator.clipboard
       .writeText(clients)
       .then((_) => _)
       .catch(console.error);
+    setTimeout(() => {
+      setShowToast((p) => ({ ...p, client: false }));
+    }, 1000);
   };
 
   const downloadConfigs = (e) => {
@@ -132,6 +145,7 @@ const ConfigFile = (props) => {
       <div>
         <h1 className="config-header">Server Config</h1>
         <div className="config" ref={serverRef} onClick={copyServerToClipboard}>
+          {showToast.server && <div className="toast">Copied!</div>}
           <p>[Interface]</p>
           <p>PrivateKey = {generatedConfig.server.privateKey}</p>
           <p>Address = {partialSubnet + 1}/24</p>
@@ -162,13 +176,14 @@ const ConfigFile = (props) => {
                 <div key={idx}>
                   <h2>Peer {idx + 1}</h2>
                   <div className="config" onClick={copyClientToClipboard}>
+                    {showToast.client && <div className="toast">Copied!</div>}
                     <p>[Interface]</p>
                     <p>PrivateKey = {peer.privateKey}</p>
                     <p>Address = {partialSubnet + (idx + 2)}/24</p>
                     <br />
                     <p>[Peer]</p>
                     <p>PublicKey = {generatedConfig.server.publicKey}</p>
-                    <p>AllowedIPs = 0.0.0.0/0, ::/0</p>
+                    <p>AllowedIPs = {config.allowedIPs}</p>
                     <p>
                       Endpoint = {config.endpoint}:{config.port}
                     </p>

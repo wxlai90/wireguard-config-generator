@@ -26,6 +26,9 @@ input[type="text"]:focus {
   border-radius: 1.5rem;
   padding: 0.5rem 1.2rem;
   margin: 1rem 0;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
 }
 
 .config-display {
@@ -62,4 +65,10 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.toast {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
 }
