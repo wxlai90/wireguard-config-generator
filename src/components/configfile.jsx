@@ -46,8 +46,8 @@ const ConfigFile = (props) => {
       `PrivateKey = ${generatedConfig.server.privateKey}` + "\n";
     configToExport += `Address = ${partialSubnet + 1}/24` + "\n";
     configToExport += `ListenPort = ${config.port}` + "\n";
-    configToExport += `${config.postupRule}` + "\n";
-    configToExport += `${config.postdownRule}` + "\n";
+    configToExport += `PostUp = ${config.postupRule}` + "\n";
+    configToExport += `PostDown = ${config.postdownRule}` + "\n";
     configToExport += "\n";
     configToExport += "\n";
     generatedConfig.peers.forEach((peer, idx) => {
@@ -71,6 +71,7 @@ const ConfigFile = (props) => {
       configToExport += "[Peer]\n";
       configToExport += `PublicKey = ${generatedConfig.server.publicKey}\n`;
       configToExport += `AllowedIPs = ${partialSubnet + (idx + 2)}/32\n`;
+      configToExport += `Endpoint = ${config.endpoint}:${config.port}\n`;
       configToExport += "\n";
       clients += configToExport;
     });
@@ -135,8 +136,8 @@ const ConfigFile = (props) => {
           <p>PrivateKey = {generatedConfig.server.privateKey}</p>
           <p>Address = {partialSubnet + 1}/24</p>
           <p>ListenPort = {config.port}</p>
-          <p>{config.postupRule}</p>
-          <p>{config.postdownRule}</p>
+          <p>PostUp = {config.postupRule}</p>
+          <p>PostDown = {config.postdownRule}</p>
           <br />
           {generatedConfig.peers.map((peer, idx) => {
             return (

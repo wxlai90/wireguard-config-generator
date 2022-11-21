@@ -15,7 +15,7 @@ const App = () => {
       "iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE",
   });
 
-  const [showConfig, setShowConfig] = useState(true);
+  const [showConfig, setShowConfig] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -110,7 +110,7 @@ const App = () => {
               />
             </label>
 
-            <button>Generate Config</button>
+            <button style={{ margin: "1rem 0" }}>Generate Config</button>
           </form>
         </div>
       )}
