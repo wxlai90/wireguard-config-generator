@@ -28,8 +28,11 @@ const App = () => {
 
   return (
     <div className="container">
-      <div>
+      <div className="df">
         <h1 className="header">Wireguard Config Generator</h1>
+        <a href="https://github.com/wxlai90/wireguard-config-generator">
+          Source Code on Github
+        </a>
       </div>
 
       {showConfig ? (
