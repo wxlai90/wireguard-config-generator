@@ -71,6 +71,9 @@ const ConfigFile = (props) => {
       configToExport += "[Interface]" + "\n";
       configToExport += `PrivateKey = ${peer.privateKey}\n`;
       configToExport += `Address = ${partialSubnet + (idx + 2)}/24\n`;
+      if (config.dns !== "") {
+        configToExport += `DNS = ${config.dns}\n`;
+      }
       configToExport += "\n";
       configToExport += "[Peer]\n";
       configToExport += `PublicKey = ${generatedConfig.server.publicKey}\n`;
@@ -180,6 +183,7 @@ const ConfigFile = (props) => {
                     <p>[Interface]</p>
                     <p>PrivateKey = {peer.privateKey}</p>
                     <p>Address = {partialSubnet + (idx + 2)}/24</p>
+                    {config.dns && <p>DNS = {config.dns}</p>}
                     <br />
                     <p>[Peer]</p>
                     <p>PublicKey = {generatedConfig.server.publicKey}</p>
