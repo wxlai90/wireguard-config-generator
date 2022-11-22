@@ -1,3 +1,5 @@
+// Taken from the original Wireguard code: https://github.com/WireGuard/wireguard-tools/blob/master/contrib/keygen-html/wireguard.js
+
 const generateKeys = (function () {
   function gf(init) {
     var r = new Float64Array(16);
