@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPeer } from "../peer";
 import generateKeys from "../wireguard";
 
@@ -11,14 +11,10 @@ const ConfigFile = (props) => {
     client: false,
   });
   const [generatedConfig, setGeneratedConfig] = useState({
-    server: {
-      privateKey: "",
-      publicKey: "",
-    },
+    server: generateKeys(),
     client: {},
     peers: [],
   });
-  const serverRef = useRef();
 
   const [networkAddress, mask] = config.networkCIDR.split("/");
   const partialSubnet =
@@ -30,14 +26,10 @@ const ConfigFile = (props) => {
     ".";
 
   useEffect(() => {
-    const serverKeys = generateKeys();
     const newPeer = createPeer(partialSubnet, peerCount + 1);
 
     setGeneratedConfig({
       ...generatedConfig,
-      server: {
-        ...serverKeys,
-      },
       peers: [...generatedConfig.peers, newPeer],
     });
   }, [peerCount]);
@@ -147,7 +139,7 @@ const ConfigFile = (props) => {
       <button onClick={downloadConfigs}>Download Configs as Zip</button>
       <div>
         <h1 className="config-header">Server Config</h1>
-        <div className="config" ref={serverRef} onClick={copyServerToClipboard}>
+        <div className="config" onClick={copyServerToClipboard}>
           {showToast.server && <div className="toast">Copied!</div>}
           <p>[Interface]</p>
           <p>PrivateKey = {generatedConfig.server.privateKey}</p>

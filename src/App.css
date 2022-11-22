@@ -29,10 +29,7 @@ input[type="text"]:focus {
   position: relative;
   user-select: none;
   cursor: pointer;
-}
-
-.config-display {
-  padding: 1rem 2rem;
+  overflow: auto;
 }
 
 .header {
