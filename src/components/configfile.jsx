@@ -26,7 +26,7 @@ const ConfigFile = (props) => {
     ".";
 
   useEffect(() => {
-    const newPeer = createPeer(partialSubnet, peerCount + 1);
+    const newPeer = createPeer(partialSubnet, mask, peerCount + 1);
 
     setGeneratedConfig({
       ...generatedConfig,
@@ -40,7 +40,7 @@ const ConfigFile = (props) => {
     let configToExport = "[Interface]" + "\n";
     configToExport +=
       `PrivateKey = ${generatedConfig.server.privateKey}` + "\n";
-    configToExport += `Address = ${partialSubnet + 1}/24` + "\n";
+    configToExport += `Address = ${partialSubnet + 1}/${mask}` + "\n";
     configToExport += `ListenPort = ${config.port}` + "\n";
     configToExport += `PostUp = ${config.postupRule}` + "\n";
     configToExport += `PostDown = ${config.postdownRule}` + "\n";
@@ -62,7 +62,7 @@ const ConfigFile = (props) => {
       configToExport = `# Peer ${idx + 1}\n`;
       configToExport += "[Interface]" + "\n";
       configToExport += `PrivateKey = ${peer.privateKey}\n`;
-      configToExport += `Address = ${partialSubnet + (idx + 2)}/24\n`;
+      configToExport += `Address = ${partialSubnet + (idx + 2)}/${mask}\n`;
       if (config.dns !== "") {
         configToExport += `DNS = ${config.dns}\n`;
       }
@@ -143,7 +143,9 @@ const ConfigFile = (props) => {
           {showToast.server && <div className="toast">Copied!</div>}
           <p>[Interface]</p>
           <p>PrivateKey = {generatedConfig.server.privateKey}</p>
-          <p>Address = {partialSubnet + 1}/24</p>
+          <p>
+            Address = {partialSubnet + 1}/{mask}
+          </p>
           <p>ListenPort = {config.port}</p>
           <p>PostUp = {config.postupRule}</p>
           <p>PostDown = {config.postdownRule}</p>
@@ -174,7 +176,9 @@ const ConfigFile = (props) => {
                     {showToast.client && <div className="toast">Copied!</div>}
                     <p>[Interface]</p>
                     <p>PrivateKey = {peer.privateKey}</p>
-                    <p>Address = {partialSubnet + (idx + 2)}/24</p>
+                    <p>
+                      Address = {partialSubnet + (idx + 2)}/{mask}
+                    </p>
                     {config.dns && <p>DNS = {config.dns}</p>}
                     <br />
                     <p>[Peer]</p>
