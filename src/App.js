@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import ConfigFile from "./components/configfile";
+import { excludePrivateIPs } from "./constants";
 
 const App = () => {
   const [state, setState] = useState({
@@ -24,6 +25,21 @@ const App = () => {
 
   const handleChange = ({ target: { name, value } }) => {
     setState((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleCheck = (e) => {
+    if (e.target.checked) {
+      setState((prevState) => ({
+        ...prevState,
+        prevAllowedIPsValue: prevState.allowedIPs,
+        allowedIPs: excludePrivateIPs,
+      }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        allowedIPs: prevState.prevAllowedIPsValue,
+      }));
+    }
   };
 
   return (
@@ -59,6 +75,11 @@ const App = () => {
                 value={state.allowedIPs}
               />
             </label>
+
+            <div className="checkbox-label">
+              <span>Exclude Private IPs</span>
+              <input type="checkbox" onChange={handleCheck} />
+            </div>
 
             <label>
               CIDR
