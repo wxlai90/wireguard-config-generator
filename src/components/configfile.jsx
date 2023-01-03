@@ -2,6 +2,7 @@ import JSZip from "jszip";
 import { useEffect, useState } from "react";
 import { createPeer } from "../peer";
 import generateKeys from "../wireguard";
+import Peer from "./peer";
 
 const ConfigFile = (props) => {
   const { config } = props;
@@ -75,10 +76,9 @@ const ConfigFile = (props) => {
       clients += configToExport;
     });
 
-    return {
-      ...res,
-      clients,
-    };
+    res.clients = clients;
+
+    return res;
   };
 
   const copyServerToClipboard = () => {
@@ -170,26 +170,17 @@ const ConfigFile = (props) => {
           <div>
             {generatedConfig.peers.map((peer, idx) => {
               return (
-                <div key={idx}>
-                  <h2>Peer {idx + 1}</h2>
-                  <div className="config" onClick={copyClientToClipboard}>
-                    {showToast.client && <div className="toast">Copied!</div>}
-                    <p>[Interface]</p>
-                    <p>PrivateKey = {peer.privateKey}</p>
-                    <p>
-                      Address = {partialSubnet + (idx + 2)}/{mask}
-                    </p>
-                    {config.dns && <p>DNS = {config.dns}</p>}
-                    <br />
-                    <p>[Peer]</p>
-                    <p>PublicKey = {generatedConfig.server.publicKey}</p>
-                    <p>AllowedIPs = {config.allowedIPs}</p>
-                    <p>
-                      Endpoint = {config.endpoint}:{config.port}
-                    </p>
-                  </div>
-                  <br />
-                </div>
+                <Peer
+                  mask={mask}
+                  idx={idx}
+                  key={idx}
+                  peer={peer}
+                  partialSubnet={partialSubnet}
+                  config={config}
+                  generatedConfig={generatedConfig}
+                  showToast={showToast}
+                  copyClientToClipboard={copyClientToClipboard}
+                />
               );
             })}
           </div>

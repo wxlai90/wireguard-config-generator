@@ -78,3 +78,21 @@ button:hover {
 .checkbox-label > input[type="checkbox"] {
   margin-left: 0.5rem;
 }
+
+.peer-display {
+  position: relative;
+}
+
+.peer-display canvas {
+  display: none;
+  position: absolute;
+  top: 55%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.peer-display:hover canvas {
+  display: block;
+}
